@@ -1,40 +1,37 @@
 import React, { useEffect, useState } from 'react';
-
-const quickSort = origArray => {
-  if (origArray.length <= 1) {
-    return origArray;
-  } else {
-    let left = [];
-    let right = [];
-    const pivot = origArray.pop();
-    const length = origArray.length;
-
-    for (var i = 0; i < length; i++) {
-      if (origArray[i] <= pivot) {
-        left.push(origArray[i]);
-      } else {
-        right.push(origArray[i]);
-      }
-    }
-    return [].concat(quickSort(left), pivot, quickSort(right));
-  }
-};
+import { Container } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
+import TextInput from './TextInput';
+import quickSortHelper from '../helpers/quicksort';
 
 const App = () => {
   const [quicksort, setQuicksort] = useState([]);
   const [toOrder] = useState([8, 9, 0, 3, 7, 5, 1, 4, 6, 2]);
 
   useEffect(() => {
-    setQuicksort(quickSort(toOrder, toOrder[0], toOrder[toOrder.length - 1]));
+    setQuicksort(
+      quickSortHelper(toOrder, toOrder[0], toOrder[toOrder.length - 1])
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleOnChange = e => {
+    console.log(e.target.value);
+  };
+
   return (
-    <div>
-      {quicksort.map((v, i) => (
-        <ul key={i}>{v}</ul>
-      ))}
-    </div>
+    <Container>
+      <Grid container spacing={6}>
+        <Grid item container xs={12} alignItems="center" justify="center">
+          <TextInput label="Enter Sequence" handleOnChange={handleOnChange} />
+        </Grid>
+        <Grid item container xs={12} alignItems="center" justify="center">
+          {quicksort.map((v, i) => (
+            <ul key={i}>{v}</ul>
+          ))}
+        </Grid>
+      </Grid>
+    </Container>
   );
 };
 
