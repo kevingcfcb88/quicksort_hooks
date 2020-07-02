@@ -1,34 +1,41 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Container } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 import TextInput from './TextInput';
-import quickSortHelper from '../helpers/quicksort';
+import { sortingMethod } from '../helpers/quickSortMethod';
 
 const App = () => {
-  const [quicksort, setQuicksort] = useState([]);
-  const [toOrder] = useState([8, 9, 0, 3, 7, 5, 1, 4, 6, 2]);
+  const [quicksort, setQuiksort] = useState([]);
+  const [toOrder, setToOrder] = useState([]);
 
-  useEffect(() => {
-    setQuicksort(
-      quickSortHelper(toOrder, toOrder[0], toOrder[toOrder.length - 1])
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const runSort = () => {
+    sortingMethod([...toOrder]);
+  };
 
-  const handleOnChange = e => {
-    console.log(e.target.value);
+  const helperRender = () => {
+    return quicksort.map((v, i) => <label key={i}>{v}</label>);
   };
 
   return (
     <Container>
       <Grid container spacing={6}>
         <Grid item container xs={12} alignItems="center" justify="center">
-          <TextInput label="Enter Sequence" handleOnChange={handleOnChange} />
+          <TextInput
+            label="Enter Sequence"
+            handleOnChange={e => setToOrder(e.target.value)}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => runSort()}
+            style={{ margin: '10px' }}
+          >
+            Sort
+          </Button>
         </Grid>
         <Grid item container xs={12} alignItems="center" justify="center">
-          {quicksort.map((v, i) => (
-            <ul key={i}>{v}</ul>
-          ))}
+          <h1>{quicksort !== null ? helperRender() : null}</h1>
         </Grid>
       </Grid>
     </Container>
